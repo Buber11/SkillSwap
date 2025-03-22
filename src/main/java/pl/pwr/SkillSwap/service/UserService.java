@@ -2,8 +2,11 @@ package pl.pwr.SkillSwap.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.pwr.SkillSwap.dto.UserPostRequest;
+import pl.pwr.SkillSwap.dto.UserRatingDTO;
 import pl.pwr.SkillSwap.enums.UserRole;
 import pl.pwr.SkillSwap.enums.UserStatus;
 import pl.pwr.SkillSwap.model.User;
@@ -29,6 +32,10 @@ public class UserService {
         user.setUpdatedAt(LocalDateTime.now());
 
         return userRepository.save(user);
+    }
+
+    public Page<UserRatingDTO> getUsersWithAverageRating(Pageable pageable) {
+        return userRepository.findAllWithAverageRating(pageable);
     }
 
 }
