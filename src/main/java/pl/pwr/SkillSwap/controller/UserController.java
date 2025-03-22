@@ -1,8 +1,11 @@
 package pl.pwr.SkillSwap.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.pwr.SkillSwap.dto.UserPostRequest;
+import pl.pwr.SkillSwap.dto.UserRatingDTO;
 import pl.pwr.SkillSwap.model.User;
 import pl.pwr.SkillSwap.service.UserService;
 
@@ -16,6 +19,11 @@ public class UserController {
     @PostMapping
     public User createUser(@RequestBody UserPostRequest request) {
         return userService.createUser(request);
+    }
+
+    @GetMapping("/ratings")
+    public Page<UserRatingDTO> getUsersWithRatings(Pageable pageable) {
+        return userService.getUsersWithAverageRating(pageable);
     }
 
 }
