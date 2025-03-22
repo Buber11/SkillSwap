@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import pl.pwr.SkillSwap.dto.AnnouncementGetRequest;
 import pl.pwr.SkillSwap.dto.AnnouncementPostRequest;
-import pl.pwr.SkillSwap.enums.VisibilityType;
 import pl.pwr.SkillSwap.model.Announcement;
 import pl.pwr.SkillSwap.service.AnnouncementService;
 
@@ -17,10 +15,10 @@ public class AnnouncementController {
     @Autowired
     private AnnouncementService announcementService;
 
+    // For example: GET /announcements?sort=title,asc
+    // or: http://localhost:8080/api/announcements?sort=user.username,desc
     @GetMapping
-    public Page<AnnouncementGetRequest> getAllAnnouncements(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) VisibilityType visibility,
+    public Page<Announcement> getAllAnnouncements(
             Pageable pageable
     ) {
         return announcementService.getAllAnnouncements(pageable);
