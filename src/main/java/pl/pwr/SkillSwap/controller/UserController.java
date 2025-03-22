@@ -1,0 +1,22 @@
+package pl.pwr.SkillSwap.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import pl.pwr.SkillSwap.dto.UserPostRequest;
+import pl.pwr.SkillSwap.model.User;
+import pl.pwr.SkillSwap.service.UserService;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping
+    public User createUser(@RequestBody UserPostRequest request) {
+        return userService.createUser(request);
+    }
+
+}
+
