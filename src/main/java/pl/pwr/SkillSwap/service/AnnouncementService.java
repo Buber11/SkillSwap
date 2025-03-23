@@ -3,7 +3,7 @@ package pl.pwr.SkillSwap.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import pl.pwr.SkillSwap.dto.AnnouncementDTO;
 import pl.pwr.SkillSwap.dto.AnnouncementPostRequest;
 import pl.pwr.SkillSwap.enums.VisibilityType;
 import pl.pwr.SkillSwap.model.Announcement;
@@ -25,8 +25,8 @@ public class AnnouncementService {
     @Autowired
     private SkillRepository skillRepository;
 
-    public Page<Announcement> getAllAnnouncements(Pageable pageable) {
-        return announcementRepository.findAll(pageable);
+    public Page<AnnouncementDTO> getAllAnnouncements(Pageable pageable) {
+        return announcementRepository.findAllWithUserDetails(pageable);
     }
 
     public Announcement createAnnouncement(AnnouncementPostRequest request) {
