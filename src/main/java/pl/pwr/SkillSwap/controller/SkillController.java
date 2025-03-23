@@ -1,5 +1,6 @@
 package pl.pwr.SkillSwap.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.pwr.SkillSwap.dto.SkillPostRequest;
@@ -14,7 +15,7 @@ public class SkillController {
     private SkillService skillService;
 
     @PostMapping
-    public Skill createSkill(@RequestBody SkillPostRequest request) {
+    public Skill createSkill(@RequestBody @Valid SkillPostRequest request) {
         return skillService.createSkill(request);
     }
 }

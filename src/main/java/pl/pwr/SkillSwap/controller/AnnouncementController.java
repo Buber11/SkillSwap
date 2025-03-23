@@ -1,5 +1,6 @@
 package pl.pwr.SkillSwap.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public class AnnouncementController {
     }
 
     @PostMapping
-    public Announcement createAnnouncement(@RequestBody AnnouncementPostRequest request) {
+    public Announcement createAnnouncement(@RequestBody @Valid AnnouncementPostRequest request) {
         return announcementService.createAnnouncement(request);
     }
 }

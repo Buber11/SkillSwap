@@ -1,5 +1,6 @@
 package pl.pwr.SkillSwap.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.pwr.SkillSwap.dto.UserDetailsDTO;
@@ -14,7 +15,7 @@ public class UserDetailsController {
     private UserDetailsService userDetailsService;
 
     @PostMapping
-    public UserDetailsDTO addOrUpdateUserDetails(@RequestBody UserDetailsPostRequest request) {
+    public UserDetailsDTO addOrUpdateUserDetails(@RequestBody @Valid UserDetailsPostRequest request) {
         return userDetailsService.createOrUpdateUserDetails(request);
     }
 }

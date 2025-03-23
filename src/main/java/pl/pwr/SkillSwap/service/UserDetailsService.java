@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pwr.SkillSwap.dto.UserDetailsDTO;
 import pl.pwr.SkillSwap.dto.UserDetailsPostRequest;
+import pl.pwr.SkillSwap.exception.ResourceNotFoundException;
 import pl.pwr.SkillSwap.mapper.UserDetailsMapper;
 import pl.pwr.SkillSwap.model.User;
 import pl.pwr.SkillSwap.model.UserDetails;
@@ -25,7 +26,7 @@ public class UserDetailsService {
     @Transactional
     public UserDetailsDTO createOrUpdateUserDetails(UserDetailsPostRequest dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         UserDetails details = userDetailsRepository.findById(dto.getUserId())
                 .orElse(new UserDetails());
