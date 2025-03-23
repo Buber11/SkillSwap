@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import pl.pwr.SkillSwap.dto.AnnouncementDTO;
 import pl.pwr.SkillSwap.dto.AnnouncementPostRequest;
 import pl.pwr.SkillSwap.model.Announcement;
 import pl.pwr.SkillSwap.service.AnnouncementService;
@@ -18,9 +19,7 @@ public class AnnouncementController {
     // For example: GET /announcements?sort=title,asc
     // or: http://localhost:8080/api/announcements?sort=user.username,desc
     @GetMapping
-    public Page<Announcement> getAllAnnouncements(
-            Pageable pageable
-    ) {
+    public Page<AnnouncementDTO> getAnnouncements(Pageable pageable) {
         return announcementService.getAllAnnouncements(pageable);
     }
 
