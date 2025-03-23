@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.pwr.SkillSwap.dto.AnnouncementDTO;
 import pl.pwr.SkillSwap.dto.AnnouncementPostRequest;
 import pl.pwr.SkillSwap.enums.VisibilityType;
+import pl.pwr.SkillSwap.exception.ResourceNotFoundException;
 import pl.pwr.SkillSwap.model.Announcement;
 import pl.pwr.SkillSwap.model.Skill;
 import pl.pwr.SkillSwap.model.User;
@@ -31,12 +32,12 @@ public class AnnouncementService {
 
     public Announcement createAnnouncement(AnnouncementPostRequest request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + request.getUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + request.getUserId()));
 
         Skill skill = null;
         if (request.getSkillId() != null) {
             skill = skillRepository.findById(request.getSkillId())
-                    .orElseThrow(() -> new RuntimeException("Skill not found with ID: " + request.getSkillId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Skill not found with ID: " + request.getSkillId()));
         }
 
         Announcement announcement = new Announcement();

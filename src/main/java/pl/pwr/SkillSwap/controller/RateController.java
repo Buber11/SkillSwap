@@ -1,5 +1,6 @@
 package pl.pwr.SkillSwap.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.pwr.SkillSwap.dto.RatePostRequest;
@@ -14,7 +15,7 @@ public class RateController {
     private RateService rateService;
 
     @PostMapping
-    public Rate addRate(@RequestBody RatePostRequest request) {
+    public Rate addRate(@RequestBody @Valid RatePostRequest request) {
         return rateService.addRate(request);
     }
 }

@@ -1,5 +1,6 @@
 package pl.pwr.SkillSwap.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody UserPostRequest request) {
+    public User createUser(@RequestBody @Valid UserPostRequest request) {
         return userService.createUser(request);
     }
 

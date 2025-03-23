@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pwr.SkillSwap.dto.RatePostRequest;
+import pl.pwr.SkillSwap.exception.ResourceNotFoundException;
 import pl.pwr.SkillSwap.model.Rate;
 import pl.pwr.SkillSwap.model.User;
 import pl.pwr.SkillSwap.repository.RateRepository;
@@ -28,10 +29,10 @@ public class RateService {
         }
 
         User sender = userRepository.findById(request.getSenderId())
-                .orElseThrow(() -> new EntityNotFoundException("Sender not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Sender not found"));
 
         User owner = userRepository.findById(request.getOwnerId())
-                .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Owner not found"));
 
         Rate rate = new Rate();
         rate.setSender(sender);
