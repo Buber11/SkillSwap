@@ -1,9 +1,3 @@
 package pl.pwr.SkillSwap.dto;
 
-import lombok.Data;
-
-@Data
-public class AuthRequest {
-    private String username;
-    private String password;
-}
+public record AuthRequest(String username, String password) {}

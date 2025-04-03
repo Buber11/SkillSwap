@@ -8,7 +8,7 @@ import pl.pwr.SkillSwap.dto.UserDetailsPostRequest;
 import pl.pwr.SkillSwap.service.UserDetailsService;
 
 @RestController
-@RequestMapping("/api/user-details")
+@RequestMapping("/api/v1/user-details")
 public class UserDetailsController {
 
     @Autowired

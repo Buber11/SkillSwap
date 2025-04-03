@@ -1,42 +1,37 @@
 package pl.pwr.SkillSwap.controller;
 
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.pwr.SkillSwap.dto.AuthRequest;
-import pl.pwr.SkillSwap.security.JwtUtil;
-import pl.pwr.SkillSwap.security.SecurityUserDetails;
+import pl.pwr.SkillSwap.service.AuthService;
+import pl.pwr.SkillSwap.util.CookieUtil;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    private final AuthService authService;
+
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
-        try {
-            var authToken = new UsernamePasswordAuthenticationToken(
-                    authRequest.getUsername(), authRequest.getPassword()
-            );
-
-
-            var auth = authenticationManager.authenticate(authToken);
-            var userDetails = (SecurityUserDetails) auth.getPrincipal();
-            String token = jwtUtil.generateToken(userDetails.getUsername());
-
-            return ResponseEntity.ok(token);
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Invalid credentials");
-        }
+    public ResponseEntity<Void> login(@RequestBody AuthRequest authRequest, HttpServletResponse response) {
+        String token = authService.login(authRequest);
+        Cookie cookie = CookieUtil.createTokenCookie(token);
+        response.addCookie(cookie);
+        return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<Void> refresh(@CookieValue("token") String token, HttpServletResponse response) {
+        String newToken = authService.refreshToken(token);
+        Cookie cookie = CookieUtil.createTokenCookie(newToken);
+        response.addCookie(cookie);
+        return ResponseEntity.ok().build();
+    }
+
 }

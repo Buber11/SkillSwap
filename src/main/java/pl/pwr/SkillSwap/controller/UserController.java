@@ -11,7 +11,7 @@ import pl.pwr.SkillSwap.model.User;
 import pl.pwr.SkillSwap.service.UserService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
