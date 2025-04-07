@@ -8,7 +8,7 @@ import pl.pwr.SkillSwap.model.Skill;
 import pl.pwr.SkillSwap.service.SkillService;
 
 @RestController
-@RequestMapping("/api/skills")
+@RequestMapping("/api/v1/skills")
 public class SkillController {
 
     @Autowired
@@ -19,4 +19,3 @@ public class SkillController {
         return skillService.createSkill(request);
     }
 }
-

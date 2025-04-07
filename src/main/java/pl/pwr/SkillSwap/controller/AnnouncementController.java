@@ -11,7 +11,7 @@ import pl.pwr.SkillSwap.model.Announcement;
 import pl.pwr.SkillSwap.service.AnnouncementService;
 
 @RestController
-@RequestMapping("/api/announcements")
+@RequestMapping("/api/v1/announcements")
 public class AnnouncementController {
 
     @Autowired

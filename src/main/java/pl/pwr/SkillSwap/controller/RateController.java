@@ -8,7 +8,7 @@ import pl.pwr.SkillSwap.model.Rate;
 import pl.pwr.SkillSwap.service.RateService;
 
 @RestController
-@RequestMapping("/api/rates")
+@RequestMapping("/api/v1/rates")
 public class RateController {
 
     @Autowired
