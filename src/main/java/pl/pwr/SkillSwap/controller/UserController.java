@@ -19,6 +19,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody @Valid UserPostRequest request) {
+        System.out.println("Creating user: " + request);
         return userService.createUser(request);
     }
 
