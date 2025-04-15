@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pwr.SkillSwap.dto.AuthRequest;
+import pl.pwr.SkillSwap.dto.UserPostRequest;
 import pl.pwr.SkillSwap.service.AuthService;
 import pl.pwr.SkillSwap.util.CookieUtil;
 
@@ -25,7 +26,11 @@ public class AuthController {
         response.addCookie(cookie);
         return ResponseEntity.ok().build();
     }
-
+    @PostMapping("register")
+    public ResponseEntity<Void> register(@RequestBody UserPostRequest userPostRequest) {
+        authService.register(userPostRequest);
+        return ResponseEntity.noContent().build();
+    }
     @PostMapping("/refresh")
     public ResponseEntity<Void> refresh(@CookieValue("token") String token, HttpServletResponse response) {
         String newToken = authService.refreshToken(token);

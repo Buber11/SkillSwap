@@ -1,9 +1,11 @@
 package pl.pwr.SkillSwap.service;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pwr.SkillSwap.dto.UserPostRequest;
 import pl.pwr.SkillSwap.dto.UserRatingDTO;
@@ -15,15 +17,17 @@ import pl.pwr.SkillSwap.repository.UserRepository;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
 
     public User createUser(UserPostRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(UserRole.valueOf(request.getRole()));
         user.setStatus(UserStatus.valueOf(request.getStatus()));
         user.setEmail(request.getEmail());
