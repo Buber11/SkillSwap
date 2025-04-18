@@ -2,6 +2,9 @@ package pl.pwr.SkillSwap.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Iterator;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +18,12 @@ import pl.pwr.SkillSwap.enums.UserStatus;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@NamedEntityGraph(
+        name = "user-skills",
+        attributeNodes = {
+                @NamedAttributeNode("skills")
+        }
+)
 public class User {
 
     @Id
@@ -42,6 +51,37 @@ public class User {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<SkillUser> skills;
+
+    public void addSkill(SkillUser skillUser) {
+        if(skills == null){
+            skills = new java.util.ArrayList<>();
+        }
+        skills.add(skillUser);
+    }
+
+    public void removeSkill(Skill skill) {
+        if (skill == null || skills == null) {
+            return;
+        }
+        for (Iterator<SkillUser> iterator = skills.iterator();
+             iterator.hasNext(); ) {
+            SkillUser skillUser = iterator.next();
+
+            if (skillUser.getUser().equals(this) &&
+                    skillUser.getSkill().equals(skill)) {
+                iterator.remove();
+                skillUser.setUser(null);
+                skillUser.setSkill(null);
+            }
+        }
+    }
 
     @PrePersist
     public void onCreate() {

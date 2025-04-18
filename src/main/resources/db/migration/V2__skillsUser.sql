@@ -1,0 +1,1 @@
+ALTER TABLE skills_user DROP COLUMN IF EXISTS experience;
