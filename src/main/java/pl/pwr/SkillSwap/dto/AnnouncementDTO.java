@@ -20,4 +20,8 @@ public class AnnouncementDTO {
     private Long userId;
     private String userName;
     private String userSurname;
+
+    public AnnouncementDTO() {
+
+    }
 }

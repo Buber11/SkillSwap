@@ -10,8 +10,9 @@ import pl.pwr.SkillSwap.model.Announcement;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
+
     @Query(value = """
-    SELECT new pl.pwr.SkillSwap.dto.AnnouncementDTO(
+    SELECT DISTINCT new pl.pwr.SkillSwap.dto.AnnouncementDTO(
         a.id, a.title, a.description, a.visibility,
         a.createdAt, a.updatedAt,
         a.skill.id, u.id, ud.name, ud.surname
@@ -22,4 +23,23 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Long
     """)
     Page<AnnouncementDTO> findAllWithUserDetails(Pageable pageable);
 
+    Page<Announcement> findByUserId(Long userId, Pageable pageable);
 }
+
+//@Repository
+//public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
+//    @Query(value = """
+//    SELECT new pl.pwr.SkillSwap.dto.AnnouncementDTO(
+//        a.id, a.title, a.description, a.visibility,
+//        a.createdAt, a.updatedAt,
+//        a.skill.id, u.id, ud.name, ud.surname
+//    )
+//    FROM Announcement a
+//    JOIN a.user u
+//    JOIN UserDetails ud ON ud.user.id = u.id
+//    """)
+//    Page<AnnouncementDTO> findAllWithUserDetails(Pageable pageable);
+//    Page<Announcement> findByUserId(Long userId, Pageable pageable);
+//}
+
+

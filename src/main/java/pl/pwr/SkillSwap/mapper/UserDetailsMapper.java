@@ -15,6 +15,7 @@ public class UserDetailsMapper {
         dto.setSurname(details.getSurname());
         dto.setDescription(details.getDescription());
         dto.setUsername(details.getUser().getUsername());
+        dto.setRole(details.getUser().getRole().name());
         return dto;
     }
 }

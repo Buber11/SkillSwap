@@ -1,26 +1,27 @@
 package pl.pwr.SkillSwap.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import pl.pwr.SkillSwap.dto.SkillDto;
 import pl.pwr.SkillSwap.dto.SkillPostRequest;
 import pl.pwr.SkillSwap.model.Skill;
-import pl.pwr.SkillSwap.repository.SkillRepository;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Service
-public class SkillService {
+public interface SkillService {
 
-    @Autowired
-    private SkillRepository skillRepository;
+    SkillDto createSkill(SkillPostRequest request);
 
-    public Skill createSkill(SkillPostRequest request) {
-        Skill skill = new Skill();
-        skill.setName(request.getName());
-        skill.setDescription(request.getDescription());
-        skill.setCategory(request.getCategory());
+    SkillDto getSkill(Long skillId);
 
-        return skillRepository.save(skill);
-    }
+    Skill getSkillEntity(Long skillId);
+
+    SkillDto updateSkill(Long skillId, SkillPostRequest request);
+
+    void deleteSkill(Long skillId);
+
+    PagedModel<EntityModel<SkillDto>> getSkillsByUserId(Long userId, Pageable pageable);
+
+    List<SkillDto> getAllSkills();
 }
-

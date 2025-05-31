@@ -23,14 +23,23 @@ public class JwtUtil {
     }
 
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    // Możesz pozostawić tę metodę (dla kompatybilności) lub przekierować ją do nowej wersji
+    public String generateToken(String username) {
+        // Domyślnie ustawiamy "USER", ale w loginie już użyjemy wersji z rolą.
+        return generateToken(username, "USER");
+    }
+
+    
 
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
@@ -39,6 +48,14 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+    public String extractRole(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

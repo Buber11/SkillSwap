@@ -40,4 +40,32 @@ public class UserDetailsService {
 
         return UserDetailsMapper.toDTO(details);
     }
+
+    @Transactional
+    public UserDetailsDTO getUserDetailsByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        Optional<UserDetails> detailsOpt = userDetailsRepository.findByUserId(user.getId());
+        if (detailsOpt.isEmpty()) {
+            UserDetailsDTO emptyDto = new UserDetailsDTO();
+            emptyDto.setUserId(user.getId());
+            emptyDto.setUsername(user.getUsername());
+            emptyDto.setRole(user.getRole().name());
+            return emptyDto;
+        }
+        
+        return UserDetailsMapper.toDTO(detailsOpt.get());
+    }
+
+
+
+
+    public UserDetailsDTO getUserDetailsByUserId(Long userId) {
+        UserDetails details = userDetailsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User details not found for user id: " + userId));
+
+        return UserDetailsMapper.toDTO(details);
+    }
+
 }
