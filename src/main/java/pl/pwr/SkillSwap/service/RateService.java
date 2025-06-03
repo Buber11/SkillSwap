@@ -40,11 +40,9 @@ public class RateService {
 
         Rate rate;
         if (existingRateOpt.isPresent()) {
-            // Aktualizacja istniejącej oceny
             rate = existingRateOpt.get();
             rate.setValue(request.getValue());
         } else {
-            // Tworzenie nowej oceny
             rate = new Rate();
             rate.setSender(sender);
             rate.setOwner(owner);
