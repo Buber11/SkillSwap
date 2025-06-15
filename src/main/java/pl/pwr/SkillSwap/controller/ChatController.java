@@ -47,4 +47,12 @@ public class ChatController {
         MessageResponseDTO dto = messageService.convertToDTO(savedMessage);
         return ResponseEntity.ok(dto);
     }
+
+    @GetMapping("/hasConversation")
+    public ResponseEntity<Boolean> hasConversation(@RequestParam Long senderId,
+                                                    @RequestParam Long receiverId) {
+        boolean hasConversation = messageService.hasUserContact(senderId, receiverId);
+        return ResponseEntity.ok(hasConversation);
+    }
+
 }

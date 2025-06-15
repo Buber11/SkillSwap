@@ -6,10 +6,12 @@ import pl.pwr.SkillSwap.dto.UserDTO;
 import pl.pwr.SkillSwap.model.Chat;
 import pl.pwr.SkillSwap.model.Message;
 import pl.pwr.SkillSwap.model.User;
+import pl.pwr.SkillSwap.repository.ChatRepository;
 import pl.pwr.SkillSwap.repository.MessageRepository;
 import pl.pwr.SkillSwap.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,13 +20,32 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final ChatService chatService;
+    private final ChatRepository chatRepository; 
 
     public MessageService(MessageRepository messageRepository,
                           UserRepository userRepository,
-                          ChatService chatService) {
+                          ChatService chatService,
+                          ChatRepository chatRepository) { 
         this.messageRepository = messageRepository;
         this.userRepository = userRepository;
         this.chatService = chatService;
+        this.chatRepository = chatRepository; 
+    }
+
+    public boolean hasUserContact(Long senderId, Long receiverId) {
+        Long firstId = Math.min(senderId, receiverId);
+        Long secondId = Math.max(senderId, receiverId);
+
+        Optional<Chat> chatOpt = chatRepository.findChatBetweenUsers(firstId, secondId);
+        if (chatOpt.isEmpty()) {
+            return false;
+        }
+
+        Chat chat = chatOpt.get();
+        List<Message> messages = messageRepository.findByChatIdOrderByCreatedAtAsc(chat.getId());
+        boolean hasSentMessage = messages.stream()
+            .anyMatch(message -> message.getSender().getId().equals(senderId));
+        return hasSentMessage;
     }
 
     public Message sendMessage(Long senderId, Long receiverId, String text) {
